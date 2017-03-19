@@ -1,0 +1,35 @@
+<configuration>
+    <appender name="logcat" class="ch.qos.logback.classic.android.LogcatAppender">
+	  <tagEncoder>
+		  <pattern>%-5.-5logger</pattern>
+	  </tagEncoder>
+    <encoder>
+      <pattern>[%-5.-5thread] %-1.-1level %20.20logger{20}| %msg%n</pattern>
+    </encoder>
+  </appender>
+<appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>/storage/emulated/0/g5app.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!-- daily rollover. Make sure the path matches the one in the file element or else
+         the rollover logs are placed in the working directory. -->
+        <fileNamePattern>/storage/emulated/0/g5app._%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+
+        <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <maxFileSize>50MB</maxFileSize>
+        </timeBasedFileNamingAndTriggeringPolicy>
+        <!-- keep 30 days' worth of history -->
+        <maxHistory>120</maxHistory>
+    </rollingPolicy>
+    <encoder>
+        <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+</appender>
+    <appender name="async" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="file" />
+    </appender>
+  <!-- Write INFO (and higher-level) messages to the log file -->
+  <root level="DEBUG">
+	  <appender-ref ref="logcat" />
+      <appender-ref ref="async" />
+  </root>
+</configuration>
